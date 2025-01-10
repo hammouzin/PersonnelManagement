@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau des Diplômes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        label, input, button {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button.update, button.delete {
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            margin: 2px;
+        }
+
+        button.update {
+            background-color: #28a745;
+            color: white;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        button.update:hover {
+            background-color: #218838;
+        }
+
+        button.delete:hover {
+            background-color: #c82333;
+        }
+
+        #response {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Les Diplômes de l'Agent</h1>
+
+    <label for="agentId">ID de l'Agent:</label>
+    <input type="number" id="agentId" name="agentId" required>
+    <button id="loadDiplomesBtn">Charger les Diplômes</button>
+
+    <h2>Liste des Diplômes</h2>
+    <table id="diplomesTable">
+        <thead>
+        <tr>
+            <th>Nom du Diplôme</th>
+            <th>Date d'Obtention</th>
+            <th>Établissement</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Les données des diplômes seront ajoutées ici -->
+        </tbody>
+    </table>
+
+    <h3>Réponse API:</h3>
+    <pre id="response"></pre>
+</div>
+
+<script>
+    document.getElementById('loadDiplomesBtn').addEventListener('click', function() {
+        var agentId = document.getElementById('agentId').value;
+
+        if (!agentId) {
+            document.getElementById('response').textContent = "Veuillez entrer un ID d'agent valide.";
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:8080/agents/" + agentId + "/diplomes", true);
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var diplomes = JSON.parse(xhr.responseText);
+
+                if (!Array.isArray(diplomes)) {
+                    diplomes = [diplomes];
+                }
+
+                displayDiplomes(diplomes);
+            } else {
+                document.getElementById('response').textContent = "Erreur : " + xhr.responseText;
+            }
+        };
+        xhr.onerror = function() {
+            document.getElementById('response').textContent = "Erreur de connexion à l'API.";
+        };
+        xhr.send();
+    });
+
+    function displayDiplomes(diplomes) {
+        var tableBody = document.getElementById('diplomesTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = "";
+
+        diplomes.forEach(function(diplome) {
+            var row = tableBody.insertRow();
+
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+
+            cell1.textContent = diplome.nomDiplome || "Nom non disponible";
+            cell2.textContent = diplome.dateObtention || "Date non disponible";
+            cell3.textContent = diplome.etablissement || "Établissement non disponible";
+
+            var updateButton = document.createElement('button');
+            updateButton.textContent = "Mettre à jour";
+            updateButton.classList.add('update');
+            updateButton.onclick = function() {
+                alert('Mise à jour du diplôme ' + diplome.nomDiplome);
+            };
+
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = "Supprimer";
+            deleteButton.classList.add('delete');
+            deleteButton.onclick = function() {
+                deleteDiplome(diplome.id);
+            };
+
+            cell4.appendChild(updateButton);
+            cell4.appendChild(deleteButton);
+        });
+    }
+
+    function deleteDiplome(diplomeId) {
+        var agentId = document.getElementById('agentId').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("DELETE", "http://localhost:8080/agents/" + agentId + "/diplomes/" + diplomeId, true);
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                document.getElementById('response').textContent = "Diplôme supprimé avec succès!";
+                document.getElementById('loadDiplomesBtn').click();
+            } else {
+                document.getElementById('response').textContent = "Erreur : " + xhr.responseText;
+            }
+        };
+        xhr.onerror = function() {
+            document.getElementById('response').textContent = "Erreur de connexion à l'API.";
+        };
+        xhr.send();
+    }
+</script>
+
+</body>
+</html>
