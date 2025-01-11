@@ -13,10 +13,10 @@ public class DiplomeMapper {
                 diplomeDto.getEtablissement()
         );
 
-    /*   // Vous devez mapper l'agent de DiplomeDto vers l'Agent de Diplome
-        if (diplomeDto.getAgent() != null) {
-            diplome.setAgent(AgentMapper.mapAgentDtoToAgent(diplomeDto.getAgent())); // Si vous avez un AgentMapper
-        } */
+       // Vous devez mapper l'agent de DiplomeDto vers l'Agent de Diplome
+       /* if (diplomeDto.getAgentId() != null) {
+            diplome.setAgent(AgentMapper.mapAgentDtoToAgent(diplomeDto.getAgentId()))); // Si vous avez un AgentMapper
+        }*/
 
         return diplome;
     }
@@ -33,6 +33,9 @@ public class DiplomeMapper {
         // Vous devez mapper l'agent de Diplome vers DiplomeDto
         if (diplome.getAgent() != null) {
             diplomeDto.setAgentId(diplome.getAgent().getId());
+        }
+        if (diplome.getCandidat() != null) {
+            diplomeDto.setCandidateId(diplome.getCandidat().getId());
         }
 
         return diplomeDto;

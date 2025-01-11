@@ -24,6 +24,7 @@ public class GradeDto {
         this.dateFinValidite = dateFinValidite;
     }
 
+
     public Long getAgentId() {
         return agentId;
     }

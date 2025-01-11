@@ -20,6 +20,11 @@ public class Diplome {
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
+    @ManyToOne
+    @JoinColumn(name = "candidat_id")
+    private Candidat candidat;
+
+
     public Diplome() {
     }
 
@@ -30,7 +35,13 @@ public class Diplome {
         this.etablissement = etablissement;
     }
 
+    public Candidat getCandidat() {
+        return candidat;
+    }
 
+    public void setCandidat(Candidat candidat) {
+        this.candidat = candidat;
+    }
 
     public Agent getAgent() {
         return agent;

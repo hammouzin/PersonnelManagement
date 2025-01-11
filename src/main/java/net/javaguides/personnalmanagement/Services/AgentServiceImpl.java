@@ -162,9 +162,9 @@ public class AgentServiceImpl implements AgentService {
 
         if (agent.getGrades().contains(grade)) {
             agent.getGrades().remove(grade);
-            grade.setAgent(null);
+            /*grade.setAgent(null);
 
-            gradeRepository.save(grade);
+            gradeRepository.save(grade);*/
             agentRepository.save(agent);
         }
 

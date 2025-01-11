@@ -14,6 +14,12 @@ public class Poste {
     private String posteName ;
     private String posteDescription ;
     private int posteSalary ;
+    private boolean disponible  ;
+
+    public boolean isDisponible() {
+        return this.disponible; // Retourne true si le poste est disponible
+    }
+
 
 
     @JsonIgnore
@@ -30,15 +36,20 @@ public class Poste {
     public Poste() {
     }
 
-    public Poste(Long id, String posteName, String posteDescription, int posteSalary) {
+    public Poste(Long id, String posteName, String posteDescription, int posteSalary, boolean disponible) {
         this.id = id;
         this.posteName = posteName;
         this.posteDescription = posteDescription;
         this.posteSalary = posteSalary;
+        this.disponible = disponible;
     }
 
     public UniteAffectation getUniteAffectation() {
         return uniteAffectation;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
     }
 
     public void setUniteAffectation(UniteAffectation uniteAffectation) {

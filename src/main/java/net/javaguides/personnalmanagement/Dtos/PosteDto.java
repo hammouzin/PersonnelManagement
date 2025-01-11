@@ -7,6 +7,7 @@ public class PosteDto {
     private String posteName ;
     private String posteDescription ;
     private int posteSalary ;
+    private boolean disponible ;
     @JsonIgnore
     private Long agentId;
     @JsonIgnore
@@ -18,11 +19,20 @@ public class PosteDto {
 
     }
 
-    public PosteDto(Long id, String posteName, String posteDescription, int posteSalary) {
+    public PosteDto(Long id, String posteName, String posteDescription, int posteSalary, boolean disponible) {
         this.id = id;
         this.posteName = posteName;
         this.posteDescription = posteDescription;
         this.posteSalary = posteSalary;
+        this.disponible = disponible;
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
     }
 
     public Long getUniteAffectationId() {

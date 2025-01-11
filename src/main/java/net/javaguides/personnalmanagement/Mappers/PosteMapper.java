@@ -9,7 +9,8 @@ public class PosteMapper {
                 posteDto.getId(),
                 posteDto.getPosteName(),
                 posteDto.getPosteDescription(),
-                posteDto.getPosteSalary()
+                posteDto.getPosteSalary(),
+                posteDto.isDisponible()
         );
         return poste;
     }
@@ -18,7 +19,8 @@ public class PosteMapper {
                 poste.getId(),
                 poste.getPosteName(),
                 poste.getPosteDescription(),
-                poste.getPosteSalary()
+                poste.getPosteSalary(),
+                poste.isDisponible()
         );
         if (poste.getAgent() != null) {
             posteDto.setAgentId(poste.getAgent().getId());

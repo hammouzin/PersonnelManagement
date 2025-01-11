@@ -48,8 +48,7 @@ public class AgentController {
     // grade
     @PostMapping("/{agentId}/grades/{gradeId}")
     public ResponseEntity<AgentDto> addGradeToAgent(@PathVariable Long agentId, @PathVariable Long gradeId) {
-        Grade grade = new Grade();
-        grade.setId(gradeId);
+
         return new ResponseEntity<>(agentService.addGradeToAgent(agentId, gradeId), HttpStatus.CREATED);
     }
 

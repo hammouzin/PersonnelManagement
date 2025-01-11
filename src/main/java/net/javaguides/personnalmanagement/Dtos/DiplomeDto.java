@@ -14,6 +14,8 @@ public class DiplomeDto {
     @JsonIgnore
     private Long agentId;
 
+    @JsonIgnore
+    private Long candidateId;
 
     public DiplomeDto() {
     }
@@ -23,6 +25,14 @@ public class DiplomeDto {
         this.nomDiplome = nomDiplome;
         this.dateObtention = dateObtention;
         this.etablissement = etablissement;
+    }
+
+    public Long getCandidateId() {
+        return candidateId;
+    }
+
+    public void setCandidateId(Long candidateId) {
+        this.candidateId = candidateId;
     }
 
     public Long getAgentId() {
