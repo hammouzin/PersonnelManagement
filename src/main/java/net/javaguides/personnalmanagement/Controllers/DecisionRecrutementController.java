@@ -12,31 +12,30 @@ import java.time.LocalDate;
 @RequestMapping("decisions")
 public class DecisionRecrutementController {
 
-
-    private  DecisionRecrutementServiceImpl decisionRecrutementService;
+    private final DecisionRecrutementServiceImpl decisionRecrutementService;
 
     @Autowired
     public DecisionRecrutementController(DecisionRecrutementServiceImpl decisionRecrutementService) {
         this.decisionRecrutementService = decisionRecrutementService;
     }
 
-    // Endpoint pour créer une décision de recrutement
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public DecisionRecrutement createDecision(
             @RequestParam Long candidatId,
             @RequestParam Long posteId,
             @RequestParam String decisionNumero,
-            @RequestParam String decisionDate, // Format: "yyyy-MM-dd"
-            @RequestParam String dateEffetPrevisionelle) { // Format: "yyyy-MM-dd"
+            @RequestParam String decisionDate,
+            @RequestParam String dateEffetPrevisionelle) {
 
-        // Conversion des dates
         LocalDate parsedDecisionDate = LocalDate.parse(decisionDate);
         LocalDate parsedDateEffetPrevisionelle = LocalDate.parse(dateEffetPrevisionelle);
 
-        // Appeler le service pour créer la décision
-        return decisionRecrutementService.createDecision(candidatId, posteId, decisionNumero, parsedDecisionDate, parsedDateEffetPrevisionelle);
+        return decisionRecrutementService.createDecision(
+                candidatId,
+                posteId,
+                decisionNumero,
+                parsedDecisionDate,
+                parsedDateEffetPrevisionelle
+        );
     }
-
-    // Endpoint pour obtenir une décision par son ID
-
 }

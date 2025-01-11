@@ -35,13 +35,13 @@ public class DecisionRecrutementServiceImpl implements DecisionRecrutementServic
 
     @Override
     public DecisionRecrutement createDecision(Long candidatId, Long posteId, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle) {
-
+        // Récupérer le candidat et le poste
         Candidat candidat = candidatRepository.findById(candidatId)
                 .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
         Poste poste = posteRepository.findById(posteId)
                 .orElseThrow(() -> new RuntimeException("Poste non trouvé"));
 
-        // Créer une nouvelle décision
+        // Créer la décision
         DecisionRecrutement decision = new DecisionRecrutement();
         decision.setCandidat(candidat);
         decision.setPoste(poste);
@@ -52,9 +52,8 @@ public class DecisionRecrutementServiceImpl implements DecisionRecrutementServic
         // Sauvegarder la décision
         DecisionRecrutement savedDecision = decisionRecrutementRepository.save(decision);
 
-        // Envoi de la décision au DCP pour validation
-        dcpService.validerPoste(savedDecision.getId()); // Validation du poste via DcpService
-
+        // Retourner la décision sans validation DCP
         return savedDecision;
     }
+
 }

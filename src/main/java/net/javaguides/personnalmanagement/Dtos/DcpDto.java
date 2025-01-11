@@ -1,5 +1,9 @@
 package net.javaguides.personnalmanagement.Dtos;
 
+import net.javaguides.personnalmanagement.Entities.DecisionRecrutement;
+
+import java.util.List;
+
 public class DcpDto {
 
 
@@ -7,6 +11,9 @@ public class DcpDto {
     private String nom;
     private String description;
     private boolean posteValide;
+
+    private List<DecisionRecrutement> decisionRecrutements;
+
     public DcpDto() {
 
     }
@@ -16,6 +23,14 @@ public class DcpDto {
         this.nom = nom;
         this.description = description;
         this.posteValide = posteValide;
+    }
+
+    public List<DecisionRecrutement> getDecisionRecrutements() {
+        return decisionRecrutements;
+    }
+
+    public void setDecisionRecrutements(List<DecisionRecrutement> decisionRecrutements) {
+        this.decisionRecrutements = decisionRecrutements;
     }
 
     public Long getId() {

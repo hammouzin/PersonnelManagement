@@ -32,17 +32,21 @@ public abstract class DcpServiceImpl implements DcpService {
             dcp.setDescription("Validation pour la décision " + decisionId);
             dcp.setPosteValide(posteExistant);
 
-            // Mettre à jour le statut de la décision et sauvegarder
+            // Mettre à jour le statut de la décision
             if (posteExistant) {
-                  decision.setStatut(StatutDecisionDcp.POSTE_EXISTANT.name()); // Convertir enum en String
+                  decision.setStatut(StatutDecisionDcp.POSTE_EXISTANT.name()); // Enum converti en String
             } else {
                   decision.setStatut(StatutDecisionDcp.POSTE_INEXISTANT.name());
                   decision.getCandidat().setStatuAdmission("EN_ATTENTE_POSTE"); // Enum pour le statut d'admission
-                  candidatRepository.save(decision.getCandidat());// Convertir enum en String
+                  candidatRepository.save(decision.getCandidat());
             }
 
+            // Associer la décision au DCP
+            decision.setDcp(dcp);
             decisionRecrutementRepository.save(decision);
 
+            // Sauvegarder le DCP
             return dcpRepository.save(dcp);
       }
+
 }

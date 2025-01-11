@@ -13,6 +13,7 @@ public class DecisionRecrutementDto {
     @JsonIgnore
     private Long candidatId;
     private Long posteId ;
+    private Long dcpId ;
 
     public DecisionRecrutementDto() {
 
@@ -23,6 +24,14 @@ public class DecisionRecrutementDto {
         this.decisionNumero = decisionNumero;
         this.decisionDate = decisionDate;
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
+    }
+
+    public Long getDcpId() {
+        return dcpId;
+    }
+
+    public void setDcpId(Long dcpId) {
+        this.dcpId = dcpId;
     }
 
     public Long getPosteId() {

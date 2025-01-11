@@ -29,6 +29,11 @@ public class DecisionRecrutement {
     @JoinColumn(name = "poste_id")
     private Poste poste;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "dcp_id") // Clé étrangère pour relier un DCP
+    private Dcp dcp;
+
     public DecisionRecrutement(Long id, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle) {
         this.id = id;
         this.decisionNumero = decisionNumero;
@@ -36,9 +41,7 @@ public class DecisionRecrutement {
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
 
     }
-    @ManyToOne
-    @JoinColumn(name = "dcp_id")  // La colonne dans la base de données pour la relation
-    private Dcp dcp;
+
 
     public DecisionRecrutement() {
 

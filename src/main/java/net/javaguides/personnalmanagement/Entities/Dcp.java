@@ -72,5 +72,9 @@ public class Dcp {
     public void setPosteValide(boolean posteValide) {
         this.posteValide = posteValide;
     }
+    public void addDecision(DecisionRecrutement decision) {
+        decisions.add(decision);
+        decision.setDcp(this); // Associer le DCP à la décision
+    }
 }
 

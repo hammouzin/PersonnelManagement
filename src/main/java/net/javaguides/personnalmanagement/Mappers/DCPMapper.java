@@ -1,28 +1,38 @@
 package net.javaguides.personnalmanagement.Mappers;
 
+import net.javaguides.personnalmanagement.Dtos.AgentDto;
 import net.javaguides.personnalmanagement.Dtos.DcpDto;
+import net.javaguides.personnalmanagement.Entities.Agent;
 import net.javaguides.personnalmanagement.Entities.Dcp;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 public class DCPMapper {
 
 
-        public DcpDto toDTO(Dcp dcp) {
-            DcpDto dto = new DcpDto();
-            dto.setId(dcp.getId());
-            dto.setNom(dcp.getNom());
-            dto.setDescription(dcp.getDescription());
-            dto.setPosteValide(dcp.isPosteValide());
-            return dto;
-        }
+    public static Dcp mapDcpDtoToDcp(DcpDto dcpDto) {
+        Dcp dcp = new Dcp(
+                dcpDto.getId(),
+                dcpDto.getNom(),
+                dcpDto.getDescription(),
+                dcpDto.isPosteValide()
+        );
 
-        public Dcp toEntity(DcpDto dto) {
-            Dcp dcp = new Dcp();
-            dcp.setId(dto.getId());
-            dcp.setNom(dto.getNom());
-            dcp.setDescription(dto.getDescription());
-            dcp.setPosteValide(dto.isPosteValide());
-            return dcp;
-        }
+        return dcp;
     }
+
+    public static DcpDto mapDcpToDcpDTO(Dcp dcp) {
+        DcpDto dcpDto = new DcpDto(
+                dcp.getId(),
+                dcp.getNom(),
+                dcp.getDescription(),
+                dcp.isPosteValide()
+        );
+
+
+
+        return dcpDto;
+    }
+}
 

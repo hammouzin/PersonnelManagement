@@ -33,6 +33,9 @@ public class DecisionRecrutementMapper {
         if (decisionRecrutement.getPoste() != null) {
             decisionRecrutementDto.setPosteId(decisionRecrutement.getPoste().getId());
         }
+        if (decisionRecrutement.getDcp() != null) {
+            decisionRecrutementDto.setDcpId(decisionRecrutement.getDcp().getId());
+        }
 
         return decisionRecrutementDto;
     }
