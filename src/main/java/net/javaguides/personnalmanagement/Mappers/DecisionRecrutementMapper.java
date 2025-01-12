@@ -38,4 +38,20 @@ public class DecisionRecrutementMapper {
 
         return decisionRecrutementDto;
     }
+
+
+    public DecisionRecrutementDto toDto(DecisionRecrutement entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        DecisionRecrutementDto dto = new DecisionRecrutementDto();
+        dto.setId(entity.getId());
+        dto.setPosteId(entity.getPoste() != null ? entity.getPoste().getId() : null);
+        dto.setVisaStatus(entity.getVisa() != null ? entity.getVisa().name() : null);
+        dto.setDecisionStatus(entity.getStatus()  != null ? entity.getStatus().name() : null);
+
+
+        return dto;
+    }
 }

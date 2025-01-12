@@ -28,6 +28,14 @@ public class DecisionRecrutement {
     @ManyToOne
     @JoinColumn(name = "poste_id")
     private Poste poste;
+
+    @Enumerated(EnumType.STRING)
+    private Visa visa;
+
+    @Enumerated(EnumType.STRING)
+    private DecisionStatus status;
+
+
 /*
     @JsonIgnore
     @ManyToOne
@@ -114,4 +122,19 @@ public class DecisionRecrutement {
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
     }
 
+    public Visa getVisa() {
+        return visa;
+    }
+
+    public void setVisa(Visa visa) {
+        this.visa = visa;
+    }
+
+    public DecisionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DecisionStatus status) {
+        this.status = status;
+    }
 }

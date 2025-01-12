@@ -1,15 +1,20 @@
 package net.javaguides.personnalmanagement.Entities;
 
+import net.javaguides.personnalmanagement.Entities.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "agents")
-public class Agent {
+public class Agent implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
@@ -25,6 +30,12 @@ public class Agent {
     private String country ;
     private LocalDate joinDate ;
     private double salary ;
+
+    @Enumerated(EnumType.STRING)
+    private Role role ;
+    
+    private String password ;
+    private String username ;
 
     public Agent() {
     }
@@ -222,4 +233,50 @@ public class Agent {
     public void setSalary(double salary) {
         this.salary = salary;
     }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+
 }

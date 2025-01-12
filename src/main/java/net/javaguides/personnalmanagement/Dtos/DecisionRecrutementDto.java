@@ -10,7 +10,11 @@ public class DecisionRecrutementDto {
     private LocalDate decisionDate ;
     private LocalDate dateEffetPrevisionelle ;
 
-   private String statut ;
+
+    private String visaStatus;
+    private String decisionStatus;
+
+    private String statut ;
 
     @JsonIgnore
     private Long candidatId;
@@ -91,5 +95,21 @@ public class DecisionRecrutementDto {
 
     public void setDateEffetPrevisionelle(LocalDate dateEffetPrevisionelle) {
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
+    }
+
+    public String getVisaStatus() {
+        return visaStatus;
+    }
+
+    public void setVisaStatus(String visaStatus) {
+        this.visaStatus = visaStatus;
+    }
+
+    public String getDecisionStatus() {
+        return decisionStatus;
+    }
+
+    public void setDecisionStatus(String decisionStatus) {
+        this.decisionStatus = decisionStatus;
     }
 }
