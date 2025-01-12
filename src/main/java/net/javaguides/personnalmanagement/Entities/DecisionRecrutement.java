@@ -20,25 +20,28 @@ public class DecisionRecrutement {
     private String statut;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "candidat_id")
-    private Candidat candidat;// Relation vers le candidat
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "candidat_id", unique = true, nullable = false)
+    private Candidat candidat;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "poste_id")
     private Poste poste;
-
+/*
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "dcp_id") // Clé étrangère pour relier un DCP
     private Dcp dcp;
 
-    public DecisionRecrutement(Long id, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle) {
+*/
+
+    public DecisionRecrutement(Long id, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle, String statut) {
         this.id = id;
         this.decisionNumero = decisionNumero;
         this.decisionDate = decisionDate;
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
+        this.statut = statut;
 
     }
 
@@ -46,7 +49,7 @@ public class DecisionRecrutement {
     public DecisionRecrutement() {
 
     }
-
+/*
     public Dcp getDcp() {
         return dcp;
     }
@@ -54,7 +57,7 @@ public class DecisionRecrutement {
     public void setDcp(Dcp dcp) {
         this.dcp = dcp;
     }
-
+*/
     public String getStatut() {
         return statut;
     }
@@ -110,4 +113,5 @@ public class DecisionRecrutement {
     public void setDateEffetPrevisionelle(LocalDate dateEffetPrevisionelle) {
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
     }
+
 }

@@ -1,21 +1,71 @@
 package net.javaguides.personnalmanagement.Services;
 
-import net.javaguides.personnalmanagement.Entities.Dcp;
-import net.javaguides.personnalmanagement.Entities.DecisionRecrutement;
-import net.javaguides.personnalmanagement.Entities.StatutAdmission;
-import net.javaguides.personnalmanagement.Entities.StatutDecisionDcp;
+import net.javaguides.personnalmanagement.Dtos.PosteDto;
+import net.javaguides.personnalmanagement.Entities.*;
+import net.javaguides.personnalmanagement.Mappers.PosteMapper;
 import net.javaguides.personnalmanagement.Repositories.CandidatRepository;
-import net.javaguides.personnalmanagement.Repositories.DcpRepository;
+ // import net.javaguides.personnalmanagement.Repositories.DcpRepository;
 import net.javaguides.personnalmanagement.Repositories.DecisionRecrutementRepository;
+import net.javaguides.personnalmanagement.Repositories.PosteRepository;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public abstract class DcpServiceImpl implements DcpService {
+public  class DcpServiceImpl implements DcpService {
 
+
+    private  DecisionRecrutementRepository decisionRecrutementRepository;
+    private final PosteRepository posteRepository;
+    public DcpServiceImpl(PosteRepository posteRepository, DecisionRecrutementRepository decisionRecrutementRepository) {
+        this.posteRepository = posteRepository;
+        this.decisionRecrutementRepository = decisionRecrutementRepository;
+    }
+
+    @Override
+    public boolean verifierExistencePoste(Long posteId) {
+        return posteRepository.findById(posteId)
+                .map(Poste::isDisponible)
+                .orElse(false);
+
+    }
+
+    @Override
+    public PosteDto getPosteDetails(Long posteId) {
+        return posteRepository.findById(posteId)
+                .map(PosteMapper::mapPosteToPosteDto)
+                .orElseThrow(() -> new RuntimeException("Poste non trouvé"));}
+    @Override
+    public void verifierEtMettreAJourStatut(Long decisionId) {
+        // Récupérer la décision
+        DecisionRecrutement decision = decisionRecrutementRepository.findById(decisionId)
+                .orElseThrow(() -> new RuntimeException("Décision non trouvée"));
+
+        // Vérifier si le poste est disponible
+        boolean posteDisponible = posteRepository.findById(decision.getPoste().getId())
+                .map(poste -> poste.isDisponible()) // Vérifie la disponibilité du poste
+                .orElse(false);
+
+        // Si le poste est disponible, on met à jour le statut
+        if (posteDisponible) {
+            decision.setStatut("POSTE_EXISTANT");
+        } else {
+            decision.setStatut("POSTE_INEXISTANT");
+        }
+
+        // Sauvegarder la mise à jour de la décision
+        decisionRecrutementRepository.save(decision);
+    }
+}
+
+
+/*
 
       private DcpRepository dcpRepository;
       private CandidatRepository candidatRepository;
+
+      public DcpServiceImpl(DcpRepository dcpRepository) {
+            this.dcpRepository = dcpRepository;
+      }
 
       private DecisionRecrutementRepository decisionRecrutementRepository;
       public Dcp validerPoste(Long decisionId) {
@@ -42,11 +92,20 @@ public abstract class DcpServiceImpl implements DcpService {
             }
 
             // Associer la décision au DCP
-            decision.setDcp(dcp);
             decisionRecrutementRepository.save(decision);
 
             // Sauvegarder le DCP
             return dcpRepository.save(dcp);
       }
 
-}
+
+      public DcpDto createDcp(DcpDto dcpDto){
+
+            Dcp dcp = DCPMapper.mapDcpDtoToDcp(dcpDto);
+            Dcp savedDcp = dcpRepository.save(dcp);
+
+            return DCPMapper.mapDcpToDcpDTO(savedDcp);
+      }
+
+*/
+

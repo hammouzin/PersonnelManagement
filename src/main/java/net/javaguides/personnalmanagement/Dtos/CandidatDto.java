@@ -19,7 +19,7 @@ public class CandidatDto {
 
 
     private List<DiplomeDto> diplomes;
-    private List<DecisionRecrutementDto> decisionRecrutements;
+    private DecisionRecrutementDto decisionRecrutement;
 
 
     public CandidatDto() {
@@ -41,6 +41,14 @@ public class CandidatDto {
 
     }
 
+    public DecisionRecrutementDto getDecisionRecrutement() {
+        return decisionRecrutement;
+    }
+
+    public void setDecisionRecrutement(DecisionRecrutementDto decisionRecrutement) {
+        this.decisionRecrutement = decisionRecrutement;
+    }
+
     public String getStatutAdmission() {
         return statutAdmission;
     }
@@ -49,13 +57,7 @@ public class CandidatDto {
         this.statutAdmission = statutAdmission;
     }
 
-    public List<DecisionRecrutementDto> getDecisionRecrutements() {
-        return decisionRecrutements;
-    }
 
-    public void setDecisionRecrutements(List<DecisionRecrutementDto> decisionRecrutements) {
-        this.decisionRecrutements = decisionRecrutements;
-    }
 
     public List<DiplomeDto> getDiplomes() {
         return diplomes;

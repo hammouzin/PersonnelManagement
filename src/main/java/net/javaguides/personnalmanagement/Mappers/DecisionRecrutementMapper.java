@@ -12,7 +12,8 @@ public class DecisionRecrutementMapper {
                 decisionRecrutementDto.getId(),
                 decisionRecrutementDto.getDecisionNumero(),
                 decisionRecrutementDto.getDecisionDate(),
-                decisionRecrutementDto.getDateEffetPrevisionelle()
+                decisionRecrutementDto.getDateEffetPrevisionelle(),
+                decisionRecrutementDto.getStatut()
         );
 
 
@@ -23,7 +24,8 @@ public class DecisionRecrutementMapper {
                 decisionRecrutement.getId(),
                 decisionRecrutement.getDecisionNumero(),
                 decisionRecrutement.getDecisionDate(),
-                decisionRecrutement.getDateEffetPrevisionelle()
+                decisionRecrutement.getDateEffetPrevisionelle(),
+                decisionRecrutement.getStatut()
         );
 
 
@@ -32,9 +34,6 @@ public class DecisionRecrutementMapper {
         }
         if (decisionRecrutement.getPoste() != null) {
             decisionRecrutementDto.setPosteId(decisionRecrutement.getPoste().getId());
-        }
-        if (decisionRecrutement.getDcp() != null) {
-            decisionRecrutementDto.setDcpId(decisionRecrutement.getDcp().getId());
         }
 
         return decisionRecrutementDto;

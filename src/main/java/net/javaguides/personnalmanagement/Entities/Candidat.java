@@ -35,8 +35,8 @@ public class Candidat {
     @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diplome> diplomes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "candidat", cascade = CascadeType.ALL)
-    private List<DecisionRecrutement> decisions = new ArrayList<>();
+    @OneToOne
+    private DecisionRecrutement decision;
 
     public Candidat() {
 
@@ -61,6 +61,14 @@ public class Candidat {
             diplomes.add(diplome);
             diplome.setCandidat(this);  // Lier le diplôme au candidat
         }
+    }
+
+    public DecisionRecrutement getDecision() {
+        return decision;
+    }
+
+    public void setDecision(DecisionRecrutement decision) {
+        this.decision = decision;
     }
 
     public String getStatuAdmission() {
@@ -159,11 +167,5 @@ public class Candidat {
         this.country = country;
     }
 
-    public List<DecisionRecrutement> getDecisions() {
-        return decisions;
-    }
 
-    public void setDecisions(List<DecisionRecrutement> decisions) {
-        this.decisions = decisions;
-    }
 }

@@ -6,4 +6,5 @@ import java.time.LocalDate;
 
 public interface DecisionRecrutementService {
     public DecisionRecrutement createDecision(Long candidatId, Long posteId, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle);
+   /* public DecisionRecrutement validerDecision(Long decisionId, Long dcpId);*/
 }

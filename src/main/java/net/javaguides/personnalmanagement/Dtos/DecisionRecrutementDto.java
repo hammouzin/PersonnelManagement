@@ -10,28 +10,40 @@ public class DecisionRecrutementDto {
     private LocalDate decisionDate ;
     private LocalDate dateEffetPrevisionelle ;
 
+   private String statut ;
+
     @JsonIgnore
     private Long candidatId;
     private Long posteId ;
-    private Long dcpId ;
+    /*private Long dcpId ;*/
 
     public DecisionRecrutementDto() {
 
     }
 
-    public DecisionRecrutementDto(Long id, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle) {
+    public DecisionRecrutementDto(Long id, String decisionNumero, LocalDate decisionDate, LocalDate dateEffetPrevisionelle, String statut) {
         this.id = id;
         this.decisionNumero = decisionNumero;
         this.decisionDate = decisionDate;
         this.dateEffetPrevisionelle = dateEffetPrevisionelle;
+        this.statut = statut;
     }
 
-    public Long getDcpId() {
+ /*   public Long getDcpId() {
         return dcpId;
     }
 
     public void setDcpId(Long dcpId) {
         this.dcpId = dcpId;
+    }
+*/
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
     public Long getPosteId() {
