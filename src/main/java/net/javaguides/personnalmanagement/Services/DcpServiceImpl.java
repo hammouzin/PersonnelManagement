@@ -16,9 +16,12 @@ public  class DcpServiceImpl implements DcpService {
 
     private  DecisionRecrutementRepository decisionRecrutementRepository;
     private final PosteRepository posteRepository;
-    public DcpServiceImpl(PosteRepository posteRepository, DecisionRecrutementRepository decisionRecrutementRepository) {
+    private CandidatRepository candidatRepository;
+    public DcpServiceImpl(PosteRepository posteRepository, DecisionRecrutementRepository decisionRecrutementRepository, CandidatRepository candidatRepository) {
         this.posteRepository = posteRepository;
+
         this.decisionRecrutementRepository = decisionRecrutementRepository;
+        this.candidatRepository = candidatRepository;
     }
 
     @Override
@@ -50,10 +53,15 @@ public  class DcpServiceImpl implements DcpService {
             decision.setStatut("POSTE_EXISTANT");
         } else {
             decision.setStatut("POSTE_INEXISTANT");
+            decision.getCandidat().setStatuAdmission("EN_ATTENTE_POSTE"); // Mise à jour du statut d'admission
         }
 
         // Sauvegarder la mise à jour de la décision
         decisionRecrutementRepository.save(decision);
+        if (!posteDisponible) {
+            // Sauvegarder le candidat si le poste est inexistant
+            candidatRepository.save(decision.getCandidat());
+        }
     }
 }
 
