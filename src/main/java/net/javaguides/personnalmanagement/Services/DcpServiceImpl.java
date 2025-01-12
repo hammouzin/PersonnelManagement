@@ -45,12 +45,14 @@ public  class DcpServiceImpl implements DcpService {
 
         // Vérifier si le poste est disponible
         boolean posteDisponible = posteRepository.findById(decision.getPoste().getId())
-                .map(poste -> poste.isDisponible()) // Vérifie la disponibilité du poste
+                .map(Poste::isDisponible) // Vérifie la disponibilité du poste
                 .orElse(false);
 
         // Si le poste est disponible, on met à jour le statut
         if (posteDisponible) {
             decision.setStatut("POSTE_EXISTANT");
+            decision.getCandidat().setStatuAdmission("Validé par Dcp"); // Mise à jour du statut d'admission
+
         } else {
             decision.setStatut("POSTE_INEXISTANT");
             decision.getCandidat().setStatuAdmission("EN_ATTENTE_POSTE"); // Mise à jour du statut d'admission
@@ -58,11 +60,13 @@ public  class DcpServiceImpl implements DcpService {
 
         // Sauvegarder la mise à jour de la décision
         decisionRecrutementRepository.save(decision);
+
+        // Sauvegarder le candidat explicitement si le poste est inexistant (pour mettre à jour son statut d'admission)
         if (!posteDisponible) {
-            // Sauvegarder le candidat si le poste est inexistant
             candidatRepository.save(decision.getCandidat());
         }
     }
+
 }
 
 
