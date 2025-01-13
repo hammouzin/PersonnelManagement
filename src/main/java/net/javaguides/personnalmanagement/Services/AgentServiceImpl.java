@@ -5,13 +5,18 @@ import net.javaguides.personnalmanagement.Entities.*;
 import net.javaguides.personnalmanagement.Mappers.AgentMapper;
 import net.javaguides.personnalmanagement.Mappers.DiplomeMapper;
 import net.javaguides.personnalmanagement.Repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AgentServiceImpl implements AgentService {
+public class AgentServiceImpl implements AgentService , UserDetailsService {
     private final GradeRepository gradeRepository;
     private final CongeRepository congeRepository;
     private final QualificationRepository qualificationRepository;
@@ -19,6 +24,9 @@ public class AgentServiceImpl implements AgentService {
     private final AffectationRepository affectationRepository;
     private AgentRepository agentRepository;
     private DiplomeRepository diplomeRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Constructor to inject dependencies
     public AgentServiceImpl(AgentRepository agentRepository, DiplomeRepository diplomeRepository, GradeRepository gradeRepository, CongeRepository congeRepository, QualificationRepository qualificationRepository, PosteRepository posteRepository, AffectationRepository affectationRepository) {
@@ -30,6 +38,18 @@ public class AgentServiceImpl implements AgentService {
         this.posteRepository = posteRepository;
         this.affectationRepository = affectationRepository;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return agentRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public Agent creerAgent(Agent agent) {
+        agent.setPassword(passwordEncoder.encode(agent.getPassword()));
+        return agentRepository.save(agent);
+    }
+
 
     @Override
     public AgentDto createAgent(AgentDto agentDto) {
