@@ -18,8 +18,8 @@ public class Affectation {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "agent_id")
-    private Agent agent;
+    @JoinColumn(name = "user_id")
+    private User agent;
 
     @JsonIgnore
     @ManyToOne
@@ -47,11 +47,11 @@ public class Affectation {
         this.uniteAffectation = uniteAffectation;
     }
 
-    public Agent getAgent() {
+    public User getAgent() {
         return agent;
     }
 
-    public void setAgent(Agent agent) {
+    public void setAgent(User agent) {
         this.agent = agent;
     }
 

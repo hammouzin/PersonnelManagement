@@ -17,8 +17,8 @@ public class Diplome {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "agent_id")
-    private Agent agent;
+    @JoinColumn(name = "user_id")
+    private User agent;
 
     @ManyToOne
     @JoinColumn(name = "candidat_id")
@@ -43,11 +43,11 @@ public class Diplome {
         this.candidat = candidat;
     }
 
-    public Agent getAgent() {
+    public User getAgent() {
         return agent;
     }
 
-    public void setAgent(Agent agent) {
+    public void setAgent(User agent) {
         this.agent = agent;
     }
 

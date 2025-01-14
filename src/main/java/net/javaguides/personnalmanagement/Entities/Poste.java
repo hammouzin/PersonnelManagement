@@ -24,8 +24,8 @@ public class Poste {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "agent_id")
-    private Agent agent;
+    @JoinColumn(name = "user_id")
+    private User agent;
 
     @JsonIgnore
     @ManyToOne
@@ -56,12 +56,13 @@ public class Poste {
         this.uniteAffectation = uniteAffectation;
     }
 
-    public Agent getAgent() {
+    public User getAgent() {
         return agent;
-}
-public void setAgent(Agent agent) {
+    }
+
+    public void setAgent(User agent) {
         this.agent = agent;
-}
+    }
 
     public Long getId() {
         return id;

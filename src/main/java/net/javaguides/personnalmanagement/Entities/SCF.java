@@ -1,32 +1,34 @@
 package net.javaguides.personnalmanagement.Entities;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
-@Table(name = "dcp")
-public class Dcp {
+@Builder
+public class SCF {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long dcpId;
-
+    @Column(name = "scf_id")
+    private Long scfId;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Dcp() { }
+    public SCF() {}
 
-    public Dcp(long dcpId, User user) {
-        this.dcpId = dcpId;
+    public SCF(Long scfId, User user) {
+        this.scfId = scfId;
         this.user = user;
     }
 
-    public long getDcpId() {
-        return dcpId;
+    public Long getScfId() {
+        return scfId;
     }
 
-    public void setDcpId(long dcpId) {
-        this.dcpId = dcpId;
+    public void setScfId(Long scfId) {
+        this.scfId = scfId;
     }
 
     public User getUser() {

@@ -18,8 +18,8 @@ public class Qualification {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "agent_id")
-    private Agent agent;
+    @JoinColumn(name = "user_id")
+    private User agent;
     public Qualification() {
 
     }
@@ -73,11 +73,11 @@ public class Qualification {
         this.qualificationType = qualificationType;
     }
 
-    public Agent getAgent() {
+    public User getAgent() {
         return agent;
     }
 
-    public void setAgent(Agent agent) {
+    public void setAgent(User agent) {
         this.agent = agent;
     }
 }

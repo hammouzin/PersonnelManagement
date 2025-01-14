@@ -1,7 +1,6 @@
 package net.javaguides.personnalmanagement.Dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import net.javaguides.personnalmanagement.Entities.Agent;
 
 import java.time.LocalDate;
 

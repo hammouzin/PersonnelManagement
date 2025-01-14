@@ -1,10 +1,9 @@
 package net.javaguides.personnalmanagement.Dtos;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
-public class AgentDto {
+public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
@@ -25,7 +24,12 @@ public class AgentDto {
     private List<PosteDto> postes;
     private List<AffectationDto> affectations;
 
-    public AgentDto(Long id, String firstName, String lastName, String address, String email, String phone, String gender, String birthDate, String birthPlace, String city, String country, LocalDate joinDate, double salary) {
+
+    public UserDto() {
+
+    }
+
+    public UserDto(Long id, String firstName, String lastName, String address, String email, String phone, String gender, String birthDate, String birthPlace, String city, String country, LocalDate joinDate, double salary) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,6 +43,54 @@ public class AgentDto {
         this.country = country;
         this.joinDate = joinDate;
         this.salary = salary;
+    }
+
+    public List<AffectationDto> getAffectations() {
+        return affectations;
+    }
+
+    public void setAffectations(List<AffectationDto> affectations) {
+        this.affectations = affectations;
+    }
+
+    public List<PosteDto> getPostes() {
+        return postes;
+    }
+
+    public void setPostes(List<PosteDto> postes) {
+        this.postes = postes;
+    }
+
+    public List<QualificationDto> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<QualificationDto> qualifications) {
+        this.qualifications = qualifications;
+    }
+
+    public List<CongeDto> getConges() {
+        return conges;
+    }
+
+    public void setConges(List<CongeDto> conges) {
+        this.conges = conges;
+    }
+
+    public List<GradeDto> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<GradeDto> grades) {
+        this.grades = grades;
+    }
+
+    public List<DiplomeDto> getDiplomes() {
+        return diplomes;
+    }
+
+    public void setDiplomes(List<DiplomeDto> diplomes) {
+        this.diplomes = diplomes;
     }
 
     public Long getId() {
@@ -145,51 +197,4 @@ public class AgentDto {
         this.salary = salary;
     }
 
-    public List<DiplomeDto> getDiplomes() {
-        return diplomes;
-    }
-
-    public void setDiplomes(List<DiplomeDto> diplomes) {
-        this.diplomes = diplomes;
-    }
-
-    public List<GradeDto> getGrades() {
-        return grades;
-    }
-
-    public void setGrades(List<GradeDto> grades) {
-        this.grades = grades;
-    }
-
-    public List<CongeDto> getConges() {
-        return conges;
-    }
-
-    public void setConges(List<CongeDto> conges) {
-        this.conges = conges;
-    }
-
-    public List<QualificationDto> getQualifications() {
-        return qualifications;
-    }
-
-    public void setQualifications(List<QualificationDto> qualifications) {
-        this.qualifications = qualifications;
-    }
-
-    public List<PosteDto> getPostes() {
-        return postes;
-    }
-
-    public void setPostes(List<PosteDto> postes) {
-        this.postes = postes;
-    }
-
-    public List<AffectationDto> getAffectations() {
-        return affectations;
-    }
-
-    public void setAffectations(List<AffectationDto> affectations) {
-        this.affectations = affectations;
-    }
 }

@@ -1,131 +1,132 @@
 package net.javaguides.personnalmanagement.Mappers;
 
-import net.javaguides.personnalmanagement.Dtos.AgentDto;
+import net.javaguides.personnalmanagement.Dtos.UserDto;
 import net.javaguides.personnalmanagement.Entities.Agent;
-import net.javaguides.personnalmanagement.Dtos.DiplomeDto;
-import net.javaguides.personnalmanagement.Entities.Diplome;
+import net.javaguides.personnalmanagement.Entities.User;
 
 import java.util.stream.Collectors;
 
 public class AgentMapper {
 
-    public static Agent mapAgentDtoToAgent(AgentDto agentDto) {
-        Agent agent = new Agent(
-                agentDto.getId(),
-                agentDto.getFirstName(),
-                agentDto.getLastName(),
-                agentDto.getAddress(),
-                agentDto.getEmail(),
-                agentDto.getPhone(),
-                agentDto.getGender(),
-                agentDto.getBirthDate(),
-                agentDto.getBirthPlace(),
-                agentDto.getCity(),
-                agentDto.getCountry(),
-                agentDto.getJoinDate(),
-                agentDto.getSalary()
+    public static User mapAgentDtoToAgent(UserDto userDto) {
+
+
+        User user = new User(
+                userDto.getId(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getAddress(),
+                userDto.getEmail(),
+                userDto.getPhone(),
+                userDto.getGender(),
+                userDto.getBirthDate(),
+                userDto.getBirthPlace(),
+                userDto.getCity(),
+                userDto.getCountry(),
+                userDto.getJoinDate(),
+                userDto.getSalary()
         );
 
-        if (agentDto.getDiplomes() != null) {
-            agent.setDiplomes(
-                    agentDto.getDiplomes().stream()
+        if (userDto.getDiplomes() != null) {
+            user.setDiplomes(
+                    userDto.getDiplomes().stream()
                             .map(DiplomeMapper::mapDiplomeDtoToDiplome)
                             .collect(Collectors.toList())
             );
         }
-        if (agentDto.getGrades() != null) {
-            agent.setGrades(
-                    agentDto.getGrades().stream()
+        if (userDto.getGrades() != null) {
+            user.setGrades(
+                    userDto.getGrades().stream()
                             .map(GradeMapper::mapGradeDtoToGrade)
                             .collect(Collectors.toList())
             );
         }
-        if (agentDto.getConges() != null) {
-            agent.setConges(
-                    agentDto.getConges().stream()
+        if (userDto.getConges() != null) {
+            user.setConges(
+                    userDto.getConges().stream()
                             .map(CongeMapper::mapCongeDtoToConge)
                             .collect(Collectors.toList())
             );
         }
-        if (agentDto.getQualifications() != null) {
-            agent.setQualifications(
-                    agentDto.getQualifications().stream()
+        if (userDto.getQualifications() != null) {
+            user.setQualifications(
+                    userDto.getQualifications().stream()
                             .map(QualificationMapper::mapQualificationDtoToQualification)
                             .collect(Collectors.toList())
             );
         }
-        if (agentDto.getPostes() != null) {
-            agent.setPostes(
-                    agentDto.getPostes().stream()
+        if (userDto.getPostes() != null) {
+            user.setPostes(
+                    userDto.getPostes().stream()
                             .map(PosteMapper::mapPosteDtoToPoste)
                             .collect(Collectors.toList())
             );
         }
-        if (agentDto.getAffectations() != null) {
-            agent.setAffectations(
-                    agentDto.getAffectations().stream()
+        if (userDto.getAffectations() != null) {
+            user.setAffectations(
+                    userDto.getAffectations().stream()
                             .map(AffectationMapper::mapAffectationDtoToAffection)
                             .collect(Collectors.toList())
             );
         }
-        return agent;
+        return user;
     }
 
-    public static AgentDto mapAgentToAgentDTO(Agent agent) {
-        AgentDto agentDTO = new AgentDto(
-                agent.getId(),
-                agent.getFirstName(),
-                agent.getLastName(),
-                agent.getAddress(),
-                agent.getEmail(),
-                agent.getPhone(),
-                agent.getGender(),
-                agent.getBirthDate(),
-                agent.getBirthPlace(),
-                agent.getCity(),
-                agent.getCountry(),
-                agent.getJoinDate(),
-                agent.getSalary()
+    public static UserDto mapAgentToAgentDTO(User user) {
+        UserDto agentDTO = new UserDto(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getAddress(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getGender(),
+                user.getBirthDate(),
+                user.getBirthPlace(),
+                user.getCity(),
+                user.getCountry(),
+                user.getJoinDate(),
+                user.getSalary()
         );
 
-        if (agent.getDiplomes() != null) {
+        if (user.getDiplomes() != null) {
             agentDTO.setDiplomes(
-                    agent.getDiplomes().stream()
+                    user.getDiplomes().stream()
                             .map(DiplomeMapper::mapDiplomeToDiplomeDto)
                             .collect(Collectors.toList())
             );
         }
-        if (agent.getGrades() != null) {
+        if (user.getGrades() != null) {
             agentDTO.setGrades(
-                    agent.getGrades().stream()
+                    user.getGrades().stream()
                             .map(GradeMapper::mapGradeToGradeDto)
                             .collect(Collectors.toList())
             );
         }
-        if (agent.getConges() != null) {
+        if (user.getConges() != null) {
             agentDTO.setConges(
-                    agent.getConges().stream()
+                    user.getConges().stream()
                             .map(CongeMapper::mapCongeToCongeDto)
                             .collect(Collectors.toList())
             );
         }
-        if (agent.getQualifications() != null) {
+        if (user.getQualifications() != null) {
             agentDTO.setQualifications(
-                    agent.getQualifications().stream()
+                    user.getQualifications().stream()
                             .map(QualificationMapper::mapQualificationToQualificationDto)
                             .collect(Collectors.toList())
             );
         }
-        if (agent.getPostes() != null) {
+        if (user.getPostes() != null) {
             agentDTO.setPostes(
-                    agent.getPostes().stream()
+                    user.getPostes().stream()
                             .map(PosteMapper::mapPosteToPosteDto)
                             .collect(Collectors.toList())
             );
         }
-        if (agent.getAffectations() != null) {
+        if (user.getAffectations() != null) {
             agentDTO.setAffectations(
-                    agent.getAffectations().stream()
+                    user.getAffectations().stream()
                             .map(AffectationMapper::matAffectationToAffectationDto)
                             .collect(Collectors.toList())
             );

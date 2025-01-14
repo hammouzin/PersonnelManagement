@@ -5,33 +5,25 @@ import net.javaguides.personnalmanagement.Entities.*;
 import net.javaguides.personnalmanagement.Mappers.AgentMapper;
 import net.javaguides.personnalmanagement.Mappers.DiplomeMapper;
 import net.javaguides.personnalmanagement.Repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AgentServiceImpl implements AgentService , UserDetailsService {
+public class AgentServiceImpl implements AgentService {
+    private AgentRepository agentRepository;
     private final GradeRepository gradeRepository;
     private final CongeRepository congeRepository;
     private final QualificationRepository qualificationRepository;
     private final PosteRepository posteRepository;
     private final AffectationRepository affectationRepository;
-    private AgentRepository agentRepository;
     private DiplomeRepository diplomeRepository;
+    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    // Constructor to inject dependencies
-    public AgentServiceImpl(AgentRepository agentRepository, DiplomeRepository diplomeRepository, GradeRepository gradeRepository, CongeRepository congeRepository, QualificationRepository qualificationRepository, PosteRepository posteRepository, AffectationRepository affectationRepository) {
+    public AgentServiceImpl(AgentRepository agentRepository ,  GradeRepository gradeRepository, CongeRepository congeRepository, QualificationRepository qualificationRepository, PosteRepository posteRepository, AffectationRepository affectationRepository) {
         this.agentRepository = agentRepository;
-        this.diplomeRepository = diplomeRepository;
         this.gradeRepository = gradeRepository;
         this.congeRepository = congeRepository;
         this.qualificationRepository = qualificationRepository;
@@ -39,61 +31,50 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         this.affectationRepository = affectationRepository;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return agentRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
-    public Agent creerAgent(Agent agent) {
-        agent.setPassword(passwordEncoder.encode(agent.getPassword()));
-        return agentRepository.save(agent);
-    }
-
 
     @Override
-    public AgentDto createAgent(AgentDto agentDto) {
-        Agent agent = AgentMapper.mapAgentDtoToAgent(agentDto);
-        Agent savedAgent = agentRepository.save(agent);
+    public UserDto createAgent(UserDto userDto) {
+        User agent = AgentMapper.mapAgentDtoToAgent(userDto);
+        User savedAgent = userRepository.save(agent);
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto updateAgent(Long id, AgentDto agentDto) {
+    public UserDto updateAgent(Long id, UserDto agentDto) {
         if (!agentRepository.existsById(id)) {
             throw new RuntimeException("Agent not found with id: " + id);
         }
-        Agent agent = AgentMapper.mapAgentDtoToAgent(agentDto);
+        User agent = AgentMapper.mapAgentDtoToAgent(agentDto);
         agent.setId(id);
-        Agent savedAgent = agentRepository.save(agent);
+        User savedAgent = userRepository.save(agent);
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto deleteAgent(Long id) {
-        Agent agent = agentRepository.findById(id).orElse(null);
+    public UserDto deleteAgent(Long id) {
+        User agent = userRepository.findById(id).orElse(null);
         if (agent != null) {
-            agentRepository.delete(agent);
+            userRepository.delete(agent);
         }
         return agent != null ? AgentMapper.mapAgentToAgentDTO(agent) : null;
     }
 
     @Override
-    public AgentDto getAgentById(Long id) {
-        Agent agent = agentRepository.findById(id).orElseThrow(() -> new RuntimeException("Agent non trouvé"));
+    public UserDto getAgentById(Long id) {
+        User agent = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Agent non trouvé"));
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public List<AgentDto> getAllAgents() {
-        List<Agent> agentList = agentRepository.findAll();
+    public List<UserDto> getAllAgents() {
+        List<User> agentList = userRepository.findAll();
         return agentList.stream().map(agent -> AgentMapper.mapAgentToAgentDTO(agent)).collect(Collectors.toList());
     }
 
     // gestion des diplomes
     @Override
-  public AgentDto addDiplomeToAgent(Long agentId, Long diplomeId) {
-        Agent agent = agentRepository.findById(agentId)
+  public UserDto addDiplomeToAgent(Long agentId, Long diplomeId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Diplome diplome = diplomeRepository.findById(diplomeId)
@@ -103,14 +84,14 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         agent.getDiplomes().add(diplome); // Ajouter à la liste des diplômes
 
         diplomeRepository.save(diplome); // Sauvegarder le diplôme
-        Agent savedAgent = agentRepository.save(agent); // Sauvegarder l'agent avec la mise à jour
+        User savedAgent = userRepository.save(agent); // Sauvegarder l'agent avec la mise à jour
 
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto removeDiplomeFromAgent(Long agentId, Long diplomeId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto removeDiplomeFromAgent(Long agentId, Long diplomeId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Diplome diplome = diplomeRepository.findById(diplomeId)
@@ -121,15 +102,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
             diplome.setAgent(null); // Remove the link from the diplome
 
             diplomeRepository.save(diplome); // Update the diplome in the database
-            agentRepository.save(agent); // Save the updated agent
+            userRepository.save(agent); // Save the updated agent
         }
 
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public AgentDto updateAgentDiplome(Long agentId, Long diplomeId, DiplomeDto diplomeDto) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto updateAgentDiplome(Long agentId, Long diplomeId, DiplomeDto diplomeDto) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Diplome diplome = agent.getDiplomes().stream()
@@ -148,7 +129,7 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 
     @Override
     public List<Diplome> getDiplomesByAgent(Long agentId) {
-        Agent agent = agentRepository.findById(agentId)
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         return agent.getDiplomes();
@@ -156,8 +137,8 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 // gestion des grades
 
     @Override
-    public AgentDto addGradeToAgent(Long agentId, Long gradeId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto addGradeToAgent(Long agentId, Long gradeId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Grade grade = gradeRepository.findById(gradeId)
@@ -167,14 +148,14 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         agent.getGrades().add(grade);
 
         gradeRepository.save(grade);
-        Agent savedAgent = agentRepository.save(agent);
+        User savedAgent = userRepository.save(agent);
 
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto removeGradeFromAgent(Long agentId, Long gradeId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto removeGradeFromAgent(Long agentId, Long gradeId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Grade grade = gradeRepository.findById(gradeId)
@@ -185,15 +166,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
             /*grade.setAgent(null);
 
             gradeRepository.save(grade);*/
-            agentRepository.save(agent);
+            userRepository.save(agent);
         }
 
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public AgentDto updateAgentGrade(Long agentId, Long gradeId, GradeDto gradeDto) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto updateAgentGrade(Long agentId, Long gradeId, GradeDto gradeDto) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Grade grade = agent.getGrades().stream()
@@ -212,7 +193,7 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 
     @Override
     public List<Grade> getGradesByAgent(Long agentId) {
-        Agent agent = agentRepository.findById(agentId)
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         return agent.getGrades();
@@ -221,8 +202,8 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
     // gestion des conges
 
     @Override
-    public AgentDto addCongeToAgent(Long agentId, Long congeId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto addCongeToAgent(Long agentId, Long congeId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Conge conge = congeRepository.findById(congeId)
@@ -232,14 +213,14 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         agent.getConges().add(conge);
 
         congeRepository.save(conge);
-        Agent savedAgent = agentRepository.save(agent);
+        User savedAgent = userRepository.save(agent);
 
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto removeCongeFromAgent(Long agentId, Long congeId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto removeCongeFromAgent(Long agentId, Long congeId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Conge conge = congeRepository.findById(congeId)
@@ -250,15 +231,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
             conge.setAgent(null);
 
             congeRepository.save(conge);
-            agentRepository.save(agent);
+            userRepository.save(agent);
         }
 
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public AgentDto updateAgentConge(Long agentId, Long congeId, CongeDto congeDto) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto updateAgentConge(Long agentId, Long congeId, CongeDto congeDto) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Conge conge = agent.getConges().stream()
@@ -280,7 +261,7 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 
     @Override
     public List<Conge> getCongesByAgent(Long agentId) {
-        Agent agent = agentRepository.findById(agentId)
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(()
                         -> new RuntimeException("Agent not found with id: " + agentId));
         return agent.getConges();
@@ -290,8 +271,8 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
     // gestion des qualifications
 
     @Override
-    public AgentDto addQualificationToAgent(Long agentId, Long qualificationId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto addQualificationToAgent(Long agentId, Long qualificationId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Qualification qualification = qualificationRepository.findById(qualificationId)
@@ -301,14 +282,14 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         agent.getQualifications().add(qualification);
 
         qualificationRepository.save(qualification);
-        Agent savedAgent = agentRepository.save(agent);
+        User savedAgent = userRepository.save(agent);
 
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto removeQualificationFromAgent(Long agentId, Long qualificationId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto removeQualificationFromAgent(Long agentId, Long qualificationId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Qualification qualification = qualificationRepository.findById(qualificationId)
@@ -319,15 +300,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
             qualification.setAgent(null);
 
             qualificationRepository.save(qualification);
-            agentRepository.save(agent);
+            userRepository.save(agent);
         }
 
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public AgentDto updateAgentQualification(Long agentId, Long qualificationId, QualificationDto qualificationDto) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto updateAgentQualification(Long agentId, Long qualificationId, QualificationDto qualificationDto) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Qualification qualification = agent.getQualifications().stream()
@@ -347,7 +328,7 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 
     @Override
     public List<Qualification> getQualificationsByAgent(Long agentId) {
-        Agent agent = agentRepository.findById(agentId)
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(()
                         -> new RuntimeException("Agent not found with id: " + agentId));
         return agent.getQualifications();
@@ -356,8 +337,8 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
     // gestion des postes :
 
     @Override
-    public AgentDto addPosteToAgent(Long agentId, Long posteId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto addPosteToAgent(Long agentId, Long posteId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Poste poste = posteRepository.findById(posteId)
@@ -367,14 +348,14 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         agent.getPostes().add(poste);
 
         posteRepository.save(poste);
-        Agent savedAgent = agentRepository.save(agent);
+        User savedAgent = userRepository.save(agent);
 
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto removePosteFromAgent(Long agentId, Long posteId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto removePosteFromAgent(Long agentId, Long posteId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Poste poste = posteRepository.findById(posteId)
@@ -385,15 +366,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
             poste.setAgent(null);
 
             posteRepository.save(poste);
-            agentRepository.save(agent);
+            userRepository.save(agent);
         }
 
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public AgentDto updateAgentPoste(Long agentId, Long posteId, PosteDto posteDto) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto updateAgentPoste(Long agentId, Long posteId, PosteDto posteDto) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Poste poste = agent.getPostes().stream()
@@ -414,15 +395,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 
     @Override
     public List<Poste> getPostesByAgent(Long agentId) {
-        Agent agent = agentRepository.findById(agentId)
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(()
                         -> new RuntimeException("Agent not found with id: " + agentId));
         return agent.getPostes();
     }
 
     @Override
-    public AgentDto addAffectationToAgent(Long agentId, Long affectationId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto addAffectationToAgent(Long agentId, Long affectationId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Affectation affectation = affectationRepository.findById(affectationId)
@@ -432,14 +413,14 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
         agent.getAffectations().add(affectation);
 
         affectationRepository.save(affectation);
-        Agent savedAgent = agentRepository.save(agent);
+        User savedAgent = userRepository.save(agent);
 
         return AgentMapper.mapAgentToAgentDTO(savedAgent);
     }
 
     @Override
-    public AgentDto removeAffectationFromAgent(Long agentId, Long affectationId) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto removeAffectationFromAgent(Long agentId, Long affectationId) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Affectation affectation = affectationRepository.findById(affectationId)
@@ -450,15 +431,15 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
             affectation.setAgent(null);
 
             affectationRepository.save(affectation);
-            agentRepository.save(agent);
+            userRepository.save(agent);
         }
 
         return AgentMapper.mapAgentToAgentDTO(agent);
     }
 
     @Override
-    public AgentDto updateAgentAffectation(Long agentId, Long affectationId, AffectationDto affectationDto) {
-        Agent agent = agentRepository.findById(agentId)
+    public UserDto updateAgentAffectation(Long agentId, Long affectationId, AffectationDto affectationDto) {
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + agentId));
 
         Affectation affectation = agent.getAffectations().stream()
@@ -479,7 +460,7 @@ public class AgentServiceImpl implements AgentService , UserDetailsService {
 
     @Override
     public List<Affectation> getAffectationsByAgent(Long agentId) {
-        Agent agent = agentRepository.findById(agentId)
+        User agent = userRepository.findById(agentId)
                 .orElseThrow(()
                         -> new RuntimeException("Agent not found with id: " + agentId));
         return agent.getAffectations();
